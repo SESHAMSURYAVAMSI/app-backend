@@ -1,0 +1,30 @@
+const mongoose = require("mongoose");
+
+const AddQuizSchema = new mongoose.Schema(
+  {
+    question: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    options: {
+      type: [String],
+      required: true,
+    },
+
+    status: {
+      type: String,
+      enum: ["active", "inactive"],
+      default: "active",
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+module.exports = mongoose.model(
+  "AddQuiz",
+  AddQuizSchema
+);
