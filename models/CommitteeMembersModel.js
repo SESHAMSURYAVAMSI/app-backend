@@ -1,9 +1,16 @@
- const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
 const CommitteeMembersSchema =
 new mongoose.Schema(
 
 {
+
+    eventId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Event",
+        required: true,
+    },
+
     name: {
         type: String,
         required: true,
@@ -27,9 +34,9 @@ new mongoose.Schema(
     status: {
         type: String,
 
-        enum: ["active", "inactive"],
+        enum: ["Active", "Inactive"],
 
-        default: "active",
+        default: "Active",
     },
 
 },

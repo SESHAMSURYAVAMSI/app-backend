@@ -1,9 +1,19 @@
- const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
 const SessionDetailsSchema =
 new mongoose.Schema(
 
 {
+
+    eventId: {
+        type:
+          mongoose.Schema.Types.ObjectId,
+
+        ref: "Event",
+
+        required: true,
+    },
+
     title: {
         type: String,
         required: true,
@@ -31,23 +41,34 @@ new mongoose.Schema(
 
     description: {
         type: String,
+        default: "",
+    },
+
+    sessionDateId: {
+        type:
+          mongoose.Schema.Types.ObjectId,
+
+        ref: "SessionAdd",
+
         required: true,
     },
 
-    session: {
-        type: String,
-        required: true,
-    },
+    trackId: {
+        type:
+          mongoose.Schema.Types.ObjectId,
 
-    track: {
-        type: String,
+        ref: "Track",
+
         required: true,
     },
 
     status: {
         type: String,
 
-        enum: ["active", "inactive"],
+        enum: [
+          "active",
+          "inactive"
+        ],
 
         default: "active",
     },

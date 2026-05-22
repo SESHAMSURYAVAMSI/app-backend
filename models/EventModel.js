@@ -31,9 +31,9 @@ const EventSchema = new mongoose.Schema(
     status: {
         type: String,
 
-        enum: ["active", "inactive"],
+        enum: ["Active", "Inactive"],
 
-        default: "active",
+        default: "Active",
     },
 
 },
