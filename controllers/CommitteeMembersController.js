@@ -1,8 +1,9 @@
- const CommitteeMembers =
+const CommitteeMembers =
 require("../models/CommitteeMembersModel");
 
 
 
+// CREATE COMMITTEE MEMBER
 const createCommitteeMember =
 async (req, res) => {
 
@@ -20,22 +21,29 @@ async (req, res) => {
 
         }
 
-      const data =
-await CommitteeMembers.create({
+        const { eventId } =
+        req.params;
 
-    name: req.body.name,
+        const data =
+        await CommitteeMembers.create({
 
-    designation:
-        req.body.designation,
+            eventId,
 
-    committeeType:
-        req.body.committeeType,
+            name: req.body.name,
 
-    image: req.file.location,
+            designation:
+                req.body.designation,
 
-    status: req.body.status
+            committeeType:
+                req.body.committeeType,
 
-});
+            image:
+                req.file.location,
+
+            status:
+                req.body.status
+
+        });
 
         res.status(201).json({
 
@@ -67,13 +75,25 @@ await CommitteeMembers.create({
 
 
 
+// GET ALL COMMITTEE MEMBERS
 const getCommitteeMembers =
 async (req, res) => {
 
     try {
 
+        const { eventId } =
+        req.params;
+
         const data =
-        await CommitteeMembers.find();
+        await CommitteeMembers.find({
+
+            eventId
+
+        }).sort({
+
+            createdAt: -1
+
+        });
 
         res.status(200).json({
 
@@ -101,6 +121,8 @@ async (req, res) => {
 
 
 
+
+// GET SINGLE COMMITTEE MEMBER
 const getSingleCommitteeMember =
 async (req, res) => {
 
@@ -111,6 +133,19 @@ async (req, res) => {
             req.params.id
         );
 
+        if (!data) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message:
+                    "Committee Member Not Found"
+
+            });
+
+        }
+
         res.status(200).json({
 
             success: true,
@@ -138,6 +173,7 @@ async (req, res) => {
 
 
 
+// UPDATE COMMITTEE MEMBER
 const updateCommitteeMember =
 async (req, res) => {
 
@@ -150,11 +186,15 @@ async (req, res) => {
             designation:
                 req.body.designation,
 
-            status: req.body.status
+            committeeType:
+                req.body.committeeType,
+
+            status:
+                req.body.status
 
         };
 
-        
+
 
         if (req.file) {
 
@@ -162,6 +202,8 @@ async (req, res) => {
                 req.file.location;
 
         }
+
+
 
         const data =
         await CommitteeMembers.findByIdAndUpdate(
@@ -173,6 +215,23 @@ async (req, res) => {
             { new: true }
 
         );
+
+
+
+        if (!data) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message:
+                    "Committee Member Not Found"
+
+            });
+
+        }
+
+
 
         res.status(200).json({
 
@@ -202,16 +261,35 @@ async (req, res) => {
 
 
 
-// DELETE COMMITTEE MEMBER
 
+
+// DELETE COMMITTEE MEMBER
 const deleteCommitteeMember =
 async (req, res) => {
 
     try {
 
+        const data =
         await CommitteeMembers.findByIdAndDelete(
             req.params.id
         );
+
+
+
+        if (!data) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message:
+                    "Committee Member Not Found"
+
+            });
+
+        }
+
+
 
         res.status(200).json({
 
@@ -235,6 +313,7 @@ async (req, res) => {
     }
 
 };
+
 
 
 module.exports = {

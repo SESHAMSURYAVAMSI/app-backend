@@ -1,65 +1,73 @@
- const SessionDetails =
+const SessionDetails =
 require("../models/SessionDetailsModel");
 
 
-// CREATE
 
+// CREATE
 const createSessionDetails =
 async (req, res) => {
 
-    try {
+  try {
 
-        const data =
-        await SessionDetails.create({
+    const { eventId } =
+    req.params;
 
-            title: req.body.title,
+    const data =
+    await SessionDetails.create({
 
-            hall: req.body.hall,
+      eventId,
 
-            date: req.body.date,
+      title:
+        req.body.title,
 
-            startTime:
-                req.body.startTime,
+      hall:
+        req.body.hall,
 
-            endTime:
-                req.body.endTime,
+      date:
+        req.body.date,
 
-            description:
-                req.body.description,
+      startTime:
+        req.body.startTime,
 
-            session:
-                req.body.session,
+      endTime:
+        req.body.endTime,
 
-            track:
-                req.body.track,
+      description:
+        req.body.description,
 
-            status:
-                req.body.status
+      sessionDateId:
+        req.body.sessionDateId,
 
-        });
+      trackId:
+        req.body.trackId,
 
-        res.status(201).json({
+      status:
+        req.body.status
 
-            success: true,
+    });
 
-            message:
-                "Session Details Added Successfully",
+    res.status(201).json({
 
-            data
+      success: true,
 
-        });
+      message:
+        "Session Details Added Successfully",
 
-    } catch (error) {
+      data
 
-        res.status(500).json({
+    });
 
-            success: false,
+  } catch (error) {
 
-            message: error.message
+    res.status(500).json({
 
-        });
+      success: false,
 
-    }
+      message: error.message
+
+    });
+
+  }
 
 };
 
@@ -67,36 +75,56 @@ async (req, res) => {
 
 
 // GET ALL
-
 const getSessionDetails =
 async (req, res) => {
 
-    try {
+  try {
 
-        const data =
-        await SessionDetails.find();
+    const { eventId } =
+    req.params;
 
-        res.status(200).json({
+    const data =
+    await SessionDetails.find({
 
-            success: true,
+      eventId
 
-            count: data.length,
+    })
 
-            data
+    .populate(
+      "sessionDateId",
+      "sessionDate"
+    )
 
-        });
+    .populate(
+      "trackId",
+      "trackName"
+    )
 
-    } catch (error) {
+    .sort({
+      createdAt: -1
+    });
 
-        res.status(500).json({
+    res.status(200).json({
 
-            success: false,
+      success: true,
 
-            message: error.message
+      count: data.length,
 
-        });
+      data
 
-    }
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+
+      success: false,
+
+      message: error.message
+
+    });
+
+  }
 
 };
 
@@ -104,49 +132,48 @@ async (req, res) => {
 
 
 // GET SINGLE
-
 const getSingleSessionDetails =
 async (req, res) => {
 
-    try {
+  try {
 
-        const data =
-        await SessionDetails.findById(
-            req.params.id
-        );
+    const data =
+    await SessionDetails.findById(
+      req.params.id
+    );
 
-        if (!data) {
+    if (!data) {
 
-            return res.status(404).json({
+      return res.status(404).json({
 
-                success: false,
+        success: false,
 
-                message:
-                    "Session Details Not Found"
+        message:
+          "Session Details Not Found"
 
-            });
-
-        }
-
-        res.status(200).json({
-
-            success: true,
-
-            data
-
-        });
-
-    } catch (error) {
-
-        res.status(500).json({
-
-            success: false,
-
-            message: error.message
-
-        });
+      });
 
     }
+
+    res.status(200).json({
+
+      success: true,
+
+      data
+
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+
+      success: false,
+
+      message: error.message
+
+    });
+
+  }
 
 };
 
@@ -154,74 +181,76 @@ async (req, res) => {
 
 
 // UPDATE
-
 const updateSessionDetails =
 async (req, res) => {
 
-    try {
+  try {
 
-        const data =
-        await SessionDetails.findByIdAndUpdate(
+    const data =
+    await SessionDetails.findByIdAndUpdate(
 
-            req.params.id,
+      req.params.id,
 
-            {
+      {
 
-                title: req.body.title,
+        title:
+          req.body.title,
 
-                hall: req.body.hall,
+        hall:
+          req.body.hall,
 
-                date: req.body.date,
+        date:
+          req.body.date,
 
-                startTime:
-                    req.body.startTime,
+        startTime:
+          req.body.startTime,
 
-                endTime:
-                    req.body.endTime,
+        endTime:
+          req.body.endTime,
 
-                description:
-                    req.body.description,
+        description:
+          req.body.description,
 
-                session:
-                    req.body.session,
+        sessionDateId:
+          req.body.sessionDateId,
 
-                track:
-                    req.body.track,
+        trackId:
+          req.body.trackId,
 
-                status:
-                    req.body.status
+        status:
+          req.body.status
 
-            },
+      },
 
-            {
-                new: true,
-                runValidators: true
-            }
+      {
+        new: true,
+        runValidators: true
+      }
 
-        );
+    );
 
-        res.status(200).json({
+    res.status(200).json({
 
-            success: true,
+      success: true,
 
-            message:
-                "Session Details Updated Successfully",
+      message:
+        "Session Details Updated Successfully",
 
-            data
+      data
 
-        });
+    });
 
-    } catch (error) {
+  } catch (error) {
 
-        res.status(500).json({
+    res.status(500).json({
 
-            success: false,
+      success: false,
 
-            message: error.message
+      message: error.message
 
-        });
+    });
 
-    }
+  }
 
 };
 
@@ -229,50 +258,50 @@ async (req, res) => {
 
 
 // DELETE
-
 const deleteSessionDetails =
 async (req, res) => {
 
-    try {
+  try {
 
-        await SessionDetails.findByIdAndDelete(
-            req.params.id
-        );
+    await SessionDetails.findByIdAndDelete(
+      req.params.id
+    );
 
-        res.status(200).json({
+    res.status(200).json({
 
-            success: true,
+      success: true,
 
-            message:
-                "Session Details Deleted Successfully"
+      message:
+        "Session Details Deleted Successfully"
 
-        });
+    });
 
-    } catch (error) {
+  } catch (error) {
 
-        res.status(500).json({
+    res.status(500).json({
 
-            success: false,
+      success: false,
 
-            message: error.message
+      message: error.message
 
-        });
+    });
 
-    }
+  }
 
 };
 
 
+
 module.exports = {
 
-    createSessionDetails,
+  createSessionDetails,
 
-    getSessionDetails,
+  getSessionDetails,
 
-    getSingleSessionDetails,
+  getSingleSessionDetails,
 
-    updateSessionDetails,
+  updateSessionDetails,
 
-    deleteSessionDetails
+  deleteSessionDetails
 
 };
