@@ -1,62 +1,61 @@
- const express = require("express");
+const express = require("express");
 
 const router = express.Router();
 
 const {
 
-    createSessionDetails,
+  createSessionDetails,
 
-    getSessionDetails,
+  getSessionDetails,
 
-    getSingleSessionDetails,
+  getSingleSessionDetails,
 
-    updateSessionDetails,
+  updateSessionDetails,
 
-    deleteSessionDetails
+  deleteSessionDetails
 
 } = require(
-    "../controllers/SessionDetailsController"
+  "../controllers/SessionDetailsController"
 );
+
 
 
 // CREATE
-
 router.post(
-    "/",
-    createSessionDetails
+  "/:eventId/schedules",
+  createSessionDetails
 );
+
 
 
 // GET ALL
-
 router.get(
-    "/",
-    getSessionDetails
+  "/:eventId/schedules",
+  getSessionDetails
 );
+
 
 
 // GET SINGLE
-
 router.get(
-    "/:id",
-    getSingleSessionDetails
+  "/:eventId/schedules/:id",
+  getSingleSessionDetails
 );
+
 
 
 // UPDATE
-
 router.put(
-    "/:id",
-    updateSessionDetails
+  "/:eventId/schedules/:id",
+  updateSessionDetails
 );
+
 
 
 // DELETE
-
 router.delete(
-    "/:id",
-    deleteSessionDetails
+  "/:eventId/schedules/:id",
+  deleteSessionDetails
 );
-
 
 module.exports = router;

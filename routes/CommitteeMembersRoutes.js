@@ -1,4 +1,4 @@
- const express = require("express");
+const express = require("express");
 
 const router = express.Router();
 
@@ -27,9 +27,6 @@ const {
     "../controllers/CommitteeMembersController"
 );
 
-
-
-
 const s3 = new S3Client({
 
     region: process.env.AWS_REGION,
@@ -45,9 +42,6 @@ const s3 = new S3Client({
     }
 
 });
-
-
-
 
 const upload = multer({
 
@@ -78,42 +72,40 @@ const upload = multer({
 
 
 
-
+// CREATE
 router.post(
-
-    "/",
-
+    "/:eventId/committee-members",
     upload.single("image"),
-
     createCommitteeMember
-
 );
 
 
-router.get("/", getCommitteeMembers);
+// GET ALL
+router.get(
+    "/:eventId/committee-members",
+    getCommitteeMembers
+);
 
 
+// GET SINGLE
+router.get(
+    "/:eventId/committee-members/:id",
+    getSingleCommitteeMember
+);
 
 
-router.get("/:id", getSingleCommitteeMember);
-
-
+// UPDATE
 router.put(
-
-    "/:id",
-
+    "/:eventId/committee-members/:id",
     upload.single("image"),
-
     updateCommitteeMember
-
 );
 
 
-
+// DELETE
 router.delete(
-    "/:id",
+    "/:eventId/committee-members/:id",
     deleteCommitteeMember
 );
-
 
 module.exports = router;

@@ -3,28 +3,74 @@ const express = require("express");
 const router = express.Router();
 
 const {
+
   createCommitteeType,
+
   getCommitteeTypes,
+
   getSingleCommitteeType,
+
   updateCommitteeType,
+
   deleteCommitteeType,
-} = require("../controllers/CommitteeTypeController");
+
+} = require(
+  "../controllers/CommitteeTypeController"
+);
 
 
-router.post("/", createCommitteeType);
+
+// CREATE
+router.post(
+
+  "/:eventId/committee-types",
+
+  createCommitteeType
+
+);
 
 
 
-router.get("/", getCommitteeTypes);
+// GET ALL
+router.get(
+
+  "/:eventId/committee-types",
+
+  getCommitteeTypes
+
+);
 
 
-router.get("/:id", getSingleCommitteeType);
+
+// GET SINGLE
+router.get(
+
+  "/:eventId/committee-types/:id",
+
+  getSingleCommitteeType
+
+);
 
 
-router.put("/:id", updateCommitteeType);
+
+// UPDATE
+router.put(
+
+  "/:eventId/committee-types/:id",
+
+  updateCommitteeType
+
+);
 
 
-router.delete("/:id", deleteCommitteeType);
 
+// DELETE
+router.delete(
+
+  "/:eventId/committee-types/:id",
+
+  deleteCommitteeType
+
+);
 
 module.exports = router;

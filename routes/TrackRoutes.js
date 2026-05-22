@@ -3,32 +3,53 @@ const express = require("express");
 const router = express.Router();
 
 const {
+
   createTrack,
+
   getTracks,
+
   getSingleTrack,
+
   updateTrack,
+
   deleteTrack,
+
 } = require("../controllers/TrackController");
 
 
 
-router.post("/", createTrack);
+// CREATE
+router.post(
+  "/:eventId/tracks",
+  createTrack
+);
 
 
-
-router.get("/", getTracks);
-
-
-
-router.get("/:id", getSingleTrack);
-
+// GET ALL
+router.get(
+  "/:eventId/tracks",
+  getTracks
+);
 
 
-router.put("/:id", updateTrack);
+// GET SINGLE
+router.get(
+  "/:eventId/tracks/:id",
+  getSingleTrack
+);
 
 
+// UPDATE
+router.put(
+  "/:eventId/tracks/:id",
+  updateTrack
+);
 
-router.delete("/:id", deleteTrack);
 
+// DELETE
+router.delete(
+  "/:eventId/tracks/:id",
+  deleteTrack
+);
 
 module.exports = router;
