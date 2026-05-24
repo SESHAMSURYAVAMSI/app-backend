@@ -16,7 +16,8 @@ app.use(express.json());
 // app.use(cors());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin:[ "http://localhost:3000",
+    "https://aig-app-two.vercel.app",],
     credentials: true,
   })
 );
