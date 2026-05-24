@@ -13,7 +13,13 @@ const app = express();
 
 app.use(express.json());
 
-app.use(cors());
+// app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 
 
@@ -47,7 +53,7 @@ const SpeakerTypeRoutes =
 require("./routes/SpeakerTypeRoutes");
 
 app.use(
-    "/api/speakertype",
+    "/api/events",
     SpeakerTypeRoutes
 );
 
@@ -59,7 +65,7 @@ const SliderRoutes =
 require("./routes/SliderRoutes");
 
 app.use(
-    "/api/sliders",
+    "/api/events",
     SliderRoutes
 );
 
@@ -71,7 +77,7 @@ const InnerSliderRoutes =
 require("./routes/InnerSliderRoutes");
 
 app.use(
-    "/api/innersliders",
+    "/api/events",
     InnerSliderRoutes
 );
 
@@ -83,7 +89,7 @@ const OuterSliderRoutes =
 require("./routes/OuterSliderRoutes");
 
 app.use(
-    "/api/outersliders",
+    "/api/events",
     OuterSliderRoutes
 );
 
@@ -95,7 +101,7 @@ const CommitteeTypeRoutes =
 require("./routes/CommitteeTypeRoutes");
 
 app.use(
-    "/api/committeetype",
+    "/api/events",
     CommitteeTypeRoutes
 );
 
@@ -107,7 +113,7 @@ const CommitteeMembersRoutes =
 require("./routes/CommitteeMembersRoutes");
 
 app.use(
-    "/api/committeemembers",
+    "/api/events",
     CommitteeMembersRoutes
 );
 
@@ -119,7 +125,7 @@ const AddSpeakerRoutes =
 require("./routes/AddSpeakerRoutes");
 
 app.use(
-    "/api/addspeakers",
+    "/api/events",
     AddSpeakerRoutes
 );
 
@@ -131,7 +137,7 @@ const AbstractsRoutes =
 require("./routes/AbstractsRoutes");
 
 app.use(
-    "/api/abstracts",
+    "/api/events",
     AbstractsRoutes
 );
 
@@ -143,7 +149,7 @@ const SessionAddRoutes =
 require("./routes/SessionAddRoutes");
 
 app.use(
-    "/api/sessionadd",
+    "/api/events",
     SessionAddRoutes
 );
 
@@ -155,7 +161,7 @@ const SessionDetailsRoutes =
 require("./routes/SessionDetailsRoutes");
 
 app.use(
-    "/api/sessiondetails",
+    "/api/events",
     SessionDetailsRoutes
 );
 
@@ -167,7 +173,7 @@ const TrackRoutes =
 require("./routes/TrackRoutes");
 
 app.use(
-    "/api/tracks",
+    "/api/events",
     TrackRoutes
 );
 
@@ -179,7 +185,7 @@ const AddDelegateRoutes =
 require("./routes/AddDelegateRoutes");
 
 app.use(
-    "/api/adddelegates",
+    "/api/events",
     AddDelegateRoutes
 );
 
@@ -191,7 +197,7 @@ const UploadFileRoutes =
 require("./routes/UploadFileRoutes");
 
 app.use(
-    "/api/uploadfiles",
+    "/api/events",
     UploadFileRoutes
 );
 
@@ -292,8 +298,8 @@ const EventInfoRoutes =
 require("./routes/EventInfoRoutes");
 
 app.use(
-    "/api/events",
-    EventInfoRoutes
+  "/api/events",
+  EventInfoRoutes
 );
 
 

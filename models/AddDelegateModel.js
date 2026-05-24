@@ -1,47 +1,59 @@
- const mongoose = require("mongoose");
+const mongoose =
+require("mongoose");
 
-const AddDelegateSchema = new mongoose.Schema(
-
-{
+const AddDelegateSchema =
+new mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: true,
-        trim: true,
+      type: String,
+      required: true,
+      trim: true,
     },
 
     email: {
-        type: String,
-        required: true,
-        unique: true,
+      type: String,
+      required: true,
     },
 
     designation: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
 
     image: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
+    },
+
+    eventId: {
+      type:
+        mongoose.Schema.Types
+          .ObjectId,
+
+      ref: "Event",
+
+      required: true,
     },
 
     status: {
-        type: String,
+      type: String,
 
-        enum: ["active", "inactive"],
+      enum: [
+        "active",
+        "inactive",
+      ],
 
-        default: "active",
+      default: "active",
     },
+  },
 
-},
-
-{
+  {
     timestamps: true,
-}
-
+  }
 );
 
-module.exports = mongoose.model(
-    "AddDelegate",
-    AddDelegateSchema
+module.exports =
+mongoose.model(
+  "AddDelegate",
+  AddDelegateSchema
 );

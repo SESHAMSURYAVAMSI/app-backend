@@ -1,4 +1,4 @@
- const express = require("express");
+const express = require("express");
 
 const router = express.Router();
 
@@ -11,114 +11,243 @@ require("@aws-sdk/client-s3");
 
 require("dotenv").config();
 
-const {
+const AddSpeaker =
+require("../models/AddSpeakerModel");
 
-    createAddSpeaker,
-
-    getAddSpeakers,
-
-    getSingleAddSpeaker,
-
-    updateAddSpeaker,
-
-    deleteAddSpeaker
-
-} = require(
-    "../controllers/AddSpeakerController"
-);
-
-
-// AWS CONFIG
-
+/**
+ * AWS
+ */
 const s3 = new S3Client({
+  region: process.env.AWS_REGION,
 
-    region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId:
+      process.env
+        .AWS_ACCESS_KEY_ID,
 
-    credentials: {
-
-        accessKeyId:
-            process.env.AWS_ACCESS_KEY_ID,
-
-        secretAccessKey:
-            process.env.AWS_SECRET_ACCESS_KEY
-
-    }
-
+    secretAccessKey:
+      process.env
+        .AWS_SECRET_ACCESS_KEY,
+  },
 });
 
-
-// MULTER S3
-
+/**
+ * Upload
+ */
 const upload = multer({
+  storage: multerS3({
+    s3,
 
-    storage: multerS3({
+    bucket:
+      process.env
+        .AWS_BUCKET_NAME,
 
-        s3: s3,
+    contentType:
+      multerS3.AUTO_CONTENT_TYPE,
 
-        bucket:
-            process.env.AWS_BUCKET_NAME,
-
-        contentType:
-            multerS3.AUTO_CONTENT_TYPE,
-
-        key: function (req, file, cb) {
-
-            cb(
-                null,
-                Date.now() +
-                "-" +
-                file.originalname
-            );
-
-        }
-
-    })
-
+    key: function (
+      req,
+      file,
+      cb
+    ) {
+      cb(
+        null,
+        Date.now() +
+          "-" +
+          file.originalname
+      );
+    },
+  }),
 });
 
-
-// CREATE
-
+/**
+ * CREATE
+ */
 router.post(
+  "/:eventId/speakers",
 
-    "/",
+  upload.single("image"),
 
-    upload.single("image"),
+  async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Image is required",
+        });
+      }
 
-    createAddSpeaker
+      const data =
+        await AddSpeaker.create({
+          name:
+            req.body.name,
 
+          designation:
+            req.body.designation,
+
+          description:
+            req.body.description,
+
+          image:
+            req.file.location,
+
+          speakerTypeId:
+            req.body
+              .speakerTypeId,
+
+          eventId:
+            req.params
+              .eventId,
+
+          status:
+            req.body.status,
+        });
+
+      res.status(201).json({
+        success: true,
+
+        message:
+          "Speaker Created Successfully",
+
+        data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+
+        message:
+          error.message,
+      });
+    }
+  }
 );
 
+/**
+ * GET ALL
+ */
+router.get(
+  "/:eventId/speakers",
 
-// GET ALL
+  async (req, res) => {
+    try {
+      const data =
+        await AddSpeaker.find({
+          eventId:
+            req.params
+              .eventId,
+        }).populate(
+          "speakerTypeId"
+        );
 
-router.get("/", getAddSpeakers);
+      res.status(200).json({
+        success: true,
 
+        data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
 
-// GET SINGLE
+        message:
+          error.message,
+      });
+    }
+  }
+);
 
-router.get("/:id", getSingleAddSpeaker);
-
-
-// UPDATE
-
+/**
+ * UPDATE
+ */
 router.put(
+  "/:eventId/speakers/:id",
 
-    "/:id",
+  upload.single("image"),
 
-    upload.single("image"),
+  async (req, res) => {
+    try {
+      const updateData = {
+        name:
+          req.body.name,
 
-    updateAddSpeaker
+        designation:
+          req.body.designation,
 
+        description:
+          req.body.description,
+
+        speakerTypeId:
+          req.body
+            .speakerTypeId,
+
+        status:
+          req.body.status,
+      };
+
+      if (
+        req.file?.location
+      ) {
+        updateData.image =
+          req.file.location;
+      }
+
+      const data =
+        await AddSpeaker.findByIdAndUpdate(
+          req.params.id,
+
+          updateData,
+
+          {
+            new: true,
+          }
+        );
+
+      res.status(200).json({
+        success: true,
+
+        message:
+          "Speaker Updated Successfully",
+
+        data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+
+        message:
+          error.message,
+      });
+    }
+  }
 );
 
-
-// DELETE
-
+/**
+ * DELETE
+ */
 router.delete(
-    "/:id",
-    deleteAddSpeaker
-);
+  "/:eventId/speakers/:id",
 
+  async (req, res) => {
+    try {
+      await AddSpeaker.findByIdAndDelete(
+        req.params.id
+      );
+
+      res.status(200).json({
+        success: true,
+
+        message:
+          "Speaker Deleted Successfully",
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+
+        message:
+          error.message,
+      });
+    }
+  }
+);
 
 module.exports = router;
