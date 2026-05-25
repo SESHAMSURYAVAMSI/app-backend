@@ -1,25 +1,36 @@
- const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
-const AddContactSchema = new mongoose.Schema(
+const AddContactSchema =
+new mongoose.Schema(
 {
     title: {
         type: String,
-        required: true
+        required: true,
+        trim: true,
     },
 
     description: {
-        type: String
+        type: String,
+        default: "",
     },
 
     status: {
         type: String,
-        enum: ["Active", "Inactive"],
-        default: "Active"
-    }
+
+        enum: [
+          "active",
+          "inactive"
+        ],
+
+        default: "active",
+    },
 },
 {
-    timestamps: true
+    timestamps: true,
 }
 );
 
-module.exports = mongoose.model("addcontact", AddContactSchema);
+module.exports = mongoose.model(
+  "AddContact",
+  AddContactSchema
+);

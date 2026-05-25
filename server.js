@@ -210,7 +210,7 @@ const AddQuizRoutes =
 require("./routes/AddQuizRoutes");
 
 app.use(
-    "/api/addquiz",
+    "/api/events",
     AddQuizRoutes
 );
 
@@ -228,7 +228,7 @@ const AddLinkRoutes =
 require("./routes/AddLinkRoutes");
 
 app.use(
-    "/api/addlinks",
+    "/api/events",
     AddLinkRoutes
 );
 
@@ -240,7 +240,7 @@ const AddExhibitorTypeRoutes =
 require("./routes/AddExhibitorTypeRoutes");
 
 app.use(
-    "/api/addexhibitortype",
+    "/api/events",
     AddExhibitorTypeRoutes
 );
 
@@ -251,8 +251,8 @@ const exhibitorRoutes =
 require("./routes/AddExhibitorRoutes");
 
 app.use(
-    "/api/exhibitors",
-    exhibitorRoutes
+  "/api/events/:eventId/exhibitors",
+  exhibitorRoutes
 );
 
 
@@ -263,7 +263,7 @@ const messageRoutes =
 require("./routes/AddMessageRoutes");
 
 app.use(
-    "/api/messages",
+    "/api/events",
     messageRoutes
 );
 
@@ -275,7 +275,7 @@ const addContactRoutes =
 require("./routes/AddContactRoutes");
 
 app.use(
-    "/api/addcontact",
+    "/api/events",
     addContactRoutes
 );
 

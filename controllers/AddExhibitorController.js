@@ -1,25 +1,67 @@
- const AddExhibitor =
+const AddExhibitor =
 require("../models/AddExhibitorModel");
 
 
-
-exports.getAllExhibitors = async (req, res) => {
+// CREATE
+const createExhibitor =
+async (req, res) => {
 
     try {
 
-        const exhibitors =
-        await AddExhibitor.find();
+        if (!req.file) {
 
-        res.status(200).json({
+            return res.status(400).json({
+
+                success: false,
+
+                message: "Image is required"
+
+            });
+
+        }
+
+        const data =
+        await AddExhibitor.create({
+
+            name: req.body.name,
+
+            stall: req.body.stall,
+
+            hall: req.body.hall,
+
+            exhibitorTypeId:
+                req.body.exhibitorTypeId,
+
+            image:
+                req.file.location,
+
+            description:
+                req.body.description,
+
+            status:
+                req.body.status
+
+        });
+
+        res.status(201).json({
+
             success: true,
-            data: exhibitors
+
+            message:
+                "Exhibitor Created Successfully",
+
+            data
+
         });
 
     } catch (error) {
 
         res.status(500).json({
+
             success: false,
+
             message: error.message
+
         });
 
     }
@@ -27,58 +69,78 @@ exports.getAllExhibitors = async (req, res) => {
 };
 
 
-exports.getSingleExhibitor =
+// GET ALL
+const getAllExhibitors =
 async (req, res) => {
 
     try {
 
-        const exhibitor =
-        await AddExhibitor.findById(req.params.id);
+        const data =
+        await AddExhibitor.find();
 
-        if (!exhibitor) {
+        res.status(200).json({
+
+            success: true,
+
+            data
+
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+
+            success: false,
+
+            message: error.message
+
+        });
+
+    }
+
+};
+
+
+// GET SINGLE
+const getSingleExhibitor =
+async (req, res) => {
+
+    try {
+
+        const data =
+        await AddExhibitor.findById(
+            req.params.id
+        );
+
+        if (!data) {
 
             return res.status(404).json({
+
                 success: false,
-                message: "Exhibitor not found"
+
+                message:
+                    "Exhibitor Not Found"
+
             });
 
         }
 
         res.status(200).json({
+
             success: true,
-            data: exhibitor
+
+            data
+
         });
 
     } catch (error) {
 
         res.status(500).json({
+
             success: false,
+
             message: error.message
-        });
 
-    }
-
-};
-
-exports.createExhibitor =
-async (req, res) => {
-
-    try {
-
-        const exhibitor =
-        await AddExhibitor.create(req.body);
-
-        res.status(201).json({
-            success: true,
-            message: "Exhibitor created successfully",
-            data: exhibitor
-        });
-
-    } catch (error) {
-
-        res.status(500).json({
-            success: false,
-            message: error.message
         });
 
     }
@@ -86,17 +148,45 @@ async (req, res) => {
 };
 
 
-exports.updateExhibitor =
+// UPDATE
+const updateExhibitor =
 async (req, res) => {
 
     try {
 
-        const exhibitor =
+        const updateData = {
+
+            name: req.body.name,
+
+            stall: req.body.stall,
+
+            hall: req.body.hall,
+
+            exhibitorTypeId:
+                req.body.exhibitorTypeId,
+
+            description:
+                req.body.description,
+
+            status:
+                req.body.status
+
+        };
+
+        // IF NEW IMAGE
+        if (req.file) {
+
+            updateData.image =
+                req.file.location;
+
+        }
+
+        const data =
         await AddExhibitor.findByIdAndUpdate(
 
             req.params.id,
 
-            req.body,
+            updateData,
 
             {
                 new: true,
@@ -105,63 +195,76 @@ async (req, res) => {
 
         );
 
-        if (!exhibitor) {
-
-            return res.status(404).json({
-                success: false,
-                message: "Exhibitor not found"
-            });
-
-        }
-
         res.status(200).json({
+
             success: true,
-            message: "Exhibitor updated successfully",
-            data: exhibitor
+
+            message:
+                "Exhibitor Updated Successfully",
+
+            data
+
         });
 
     } catch (error) {
 
         res.status(500).json({
+
             success: false,
+
             message: error.message
+
         });
 
     }
 
 };
 
-exports.deleteExhibitor =
+
+// DELETE
+const deleteExhibitor =
 async (req, res) => {
 
     try {
 
-        const exhibitor =
         await AddExhibitor.findByIdAndDelete(
             req.params.id
         );
 
-        if (!exhibitor) {
-
-            return res.status(404).json({
-                success: false,
-                message: "Exhibitor not found"
-            });
-
-        }
-
         res.status(200).json({
+
             success: true,
-            message: "Exhibitor deleted successfully"
+
+            message:
+                "Exhibitor Deleted Successfully"
+
         });
 
     } catch (error) {
 
         res.status(500).json({
+
             success: false,
+
             message: error.message
+
         });
 
     }
+
+};
+
+
+module.exports = {
+
+    createExhibitor,
+
+    getAllExhibitors,
+
+    getSingleExhibitor,
+
+    updateExhibitor,
+
+    deleteExhibitor
 
 };

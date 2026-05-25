@@ -9,21 +9,45 @@ const {
   updateAddLink,
   deleteAddLink,
 } = require("../controllers/AddLinkController");
-router.post("/", createAddLink);
 
+/**
+ * CREATE
+ */
+router.post(
+  "/:eventId/quick-links",
+  createAddLink
+);
 
+/**
+ * GET ALL
+ */
+router.get(
+  "/:eventId/quick-links",
+  getAddLinks
+);
 
-router.get("/", getAddLinks);
+/**
+ * GET SINGLE
+ */
+router.get(
+  "/:eventId/quick-links/:id",
+  getSingleAddLink
+);
 
+/**
+ * UPDATE
+ */
+router.put(
+  "/:eventId/quick-links/:id",
+  updateAddLink
+);
 
-
-router.get("/:id", getSingleAddLink);
-
-router.put("/:id", updateAddLink);
-
-
-
-router.delete("/:id", deleteAddLink);
-
+/**
+ * DELETE
+ */
+router.delete(
+  "/:eventId/quick-links/:id",
+  deleteAddLink
+);
 
 module.exports = router;

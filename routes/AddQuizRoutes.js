@@ -10,25 +10,44 @@ const {
   deleteAddQuiz,
 } = require("../controllers/AddQuizController");
 
+/**
+ * CREATE
+ */
+router.post(
+  "/:eventId/quizzes",
+  createAddQuiz
+);
 
+/**
+ * GET ALL
+ */
+router.get(
+  "/:eventId/quizzes",
+  getAddQuizs
+);
 
-router.post("/", createAddQuiz);
+/**
+ * GET SINGLE
+ */
+router.get(
+  "/:eventId/quizzes/:id",
+  getSingleAddQuiz
+);
 
+/**
+ * UPDATE
+ */
+router.put(
+  "/:eventId/quizzes/:id",
+  updateAddQuiz
+);
 
-
-router.get("/", getAddQuizs);
-
-
-
-router.get("/:id", getSingleAddQuiz);
-
-
-
-router.put("/:id", updateAddQuiz);
-
-
-
-router.delete("/:id", deleteAddQuiz);
-
+/**
+ * DELETE
+ */
+router.delete(
+  "/:eventId/quizzes/:id",
+  deleteAddQuiz
+);
 
 module.exports = router;

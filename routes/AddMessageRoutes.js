@@ -5,32 +5,44 @@ const router = express.Router();
 const messageController =
 require("../controllers/AddMessageController");
 
-
-
-router.get("/",
-    messageController.getAllMessages
+/**
+ * GET ALL
+ */
+router.get(
+  "/:eventId/push-messages",
+  messageController.getAllMessages
 );
 
-
-router.get("/:id",
-    messageController.getSingleMessage
+/**
+ * GET SINGLE
+ */
+router.get(
+  "/:eventId/push-messages/:id",
+  messageController.getSingleMessage
 );
 
-
-router.post("/",
-    messageController.createMessage
+/**
+ * CREATE
+ */
+router.post(
+  "/:eventId/push-messages",
+  messageController.createMessage
 );
 
-
-
-router.put("/:id",
-    messageController.updateMessage
+/**
+ * UPDATE
+ */
+router.put(
+  "/:eventId/push-messages/:id",
+  messageController.updateMessage
 );
 
-
-router.delete("/:id",
-    messageController.deleteMessage
+/**
+ * DELETE
+ */
+router.delete(
+  "/:eventId/push-messages/:id",
+  messageController.deleteMessage
 );
-
 
 module.exports = router;

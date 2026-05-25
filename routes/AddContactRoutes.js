@@ -1,23 +1,48 @@
- const express = require("express");
+const express = require("express");
 
 const router = express.Router();
 
 const {
-    createAddContact,
-    getAllAddContacts,
-    getSingleAddContact,
-    updateAddContact,
-    deleteAddContact
+  createAddContact,
+  getAllAddContacts,
+  getSingleAddContact,
+  updateAddContact,
+  deleteAddContact,
 } = require("../controllers/AddContactController");
 
-router.post("/", createAddContact);
 
-router.get("/", getAllAddContacts);
+// CREATE
+router.post(
+  "/:eventId/contacts",
+  createAddContact
+);
 
-router.get("/:id", getSingleAddContact);
 
-router.put("/:id", updateAddContact);
+// GET ALL
+router.get(
+  "/:eventId/contacts",
+  getAllAddContacts
+);
 
-router.delete("/:id", deleteAddContact);
+
+// GET SINGLE
+router.get(
+  "/:eventId/contacts/:id",
+  getSingleAddContact
+);
+
+
+// UPDATE
+router.put(
+  "/:eventId/contacts/:id",
+  updateAddContact
+);
+
+
+// DELETE
+router.delete(
+  "/:eventId/contacts/:id",
+  deleteAddContact
+);
 
 module.exports = router;

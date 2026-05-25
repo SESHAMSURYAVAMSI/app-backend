@@ -2,35 +2,89 @@ const express = require("express");
 
 const router = express.Router();
 
+const multer = require("multer");
+
+const multerS3 = require("multer-s3");
+
+const { S3Client } = require("@aws-sdk/client-s3");
+
+require("dotenv").config();
+
 const exhibitorController =
 require("../controllers/AddExhibitorController");
 
 
+// AWS S3
+const s3 = new S3Client({
+  region: process.env.AWS_REGION,
 
-router.get("/",
-    exhibitorController.getAllExhibitors
+  credentials: {
+    accessKeyId:
+      process.env.AWS_ACCESS_KEY_ID,
+
+    secretAccessKey:
+      process.env.AWS_SECRET_ACCESS_KEY,
+  },
+});
+
+
+// MULTER
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+
+    bucket:
+      process.env.AWS_BUCKET_NAME,
+
+    contentType:
+      multerS3.AUTO_CONTENT_TYPE,
+
+    key: function (req, file, cb) {
+      cb(
+        null,
+        Date.now() +
+          "-" +
+          file.originalname
+      );
+    },
+  }),
+});
+
+
+// GET ALL
+router.get(
+  "/",
+  exhibitorController.getAllExhibitors
 );
 
 
-
-router.get("/:id",
-    exhibitorController.getSingleExhibitor
+// GET SINGLE
+router.get(
+  "/:id",
+  exhibitorController.getSingleExhibitor
 );
 
 
-router.post("/",
-    exhibitorController.createExhibitor
+// CREATE
+router.post(
+  "/",
+  upload.single("image"),
+  exhibitorController.createExhibitor
 );
 
 
-
-router.put("/:id",
-    exhibitorController.updateExhibitor
+// UPDATE
+router.put(
+  "/:id",
+  upload.single("image"),
+  exhibitorController.updateExhibitor
 );
 
-router.delete("/:id",
-    exhibitorController.deleteExhibitor
-);
 
+// DELETE
+router.delete(
+  "/:id",
+  exhibitorController.deleteExhibitor
+);
 
 module.exports = router;

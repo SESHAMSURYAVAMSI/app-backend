@@ -8,24 +8,48 @@ const {
   getSingleAddExhibitorType,
   updateAddExhibitorType,
   deleteAddExhibitorType,
-} = require("../controllers/AddExhibitorTypeController");
+} = require(
+  "../controllers/AddExhibitorTypeController"
+);
 
+/**
+ * GET ALL
+ */
+router.get(
+  "/:eventId/exhibitor-types",
+  getAddExhibitorTypes
+);
 
-router.post("/", createAddExhibitorType);
+/**
+ * GET SINGLE
+ */
+router.get(
+  "/:eventId/exhibitor-types/:id",
+  getSingleAddExhibitorType
+);
 
+/**
+ * CREATE
+ */
+router.post(
+  "/:eventId/exhibitor-types",
+  createAddExhibitorType
+);
 
+/**
+ * UPDATE
+ */
+router.put(
+  "/:eventId/exhibitor-types/:id",
+  updateAddExhibitorType
+);
 
-router.get("/", getAddExhibitorTypes);
-
-
-
-router.get("/:id", getSingleAddExhibitorType);
-
-router.put("/:id", updateAddExhibitorType);
-
-
-
-router.delete("/:id", deleteAddExhibitorType);
-
+/**
+ * DELETE
+ */
+router.delete(
+  "/:eventId/exhibitor-types/:id",
+  deleteAddExhibitorType
+);
 
 module.exports = router;
