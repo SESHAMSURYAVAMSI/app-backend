@@ -138,7 +138,6 @@ const deleteAbstract = async (req, res) => {
 
 };
 
-
 module.exports = {
   createAbstract,
   getAbstracts,
