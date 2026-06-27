@@ -17,7 +17,8 @@ app.use(express.json());
 app.use(
   cors({
     origin:[ "http://localhost:3000",
-    "https://aig-app-two.vercel.app",],
+    "https://aig-app-two.vercel.app",
+],
     credentials: true,
   })
 );
@@ -307,12 +308,27 @@ app.use(
 
 
 
+// const PORT = process.env.PORT || 5000;
+
+// app.listen(PORT, () => {
+
+//     console.log(
+//         `Server Running On Port ${PORT}`
+//     );
+
+// });
+
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(() => {
+    console.log("MongoDB Connected...");
 
-    console.log(
-        `Server Running On Port ${PORT}`
-    );
-
-});
+    app.listen(PORT, () => {
+      console.log(`Server Running On Port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.log("Mongo Error:", err);
+  });
